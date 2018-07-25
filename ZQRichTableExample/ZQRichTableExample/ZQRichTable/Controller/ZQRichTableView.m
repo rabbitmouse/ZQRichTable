@@ -16,56 +16,54 @@
 #import "ZQMacro.h"
 
 @interface ZQRichTableView ()<UITableViewDelegate ,UITableViewDataSource, TableViewCallBackDelegate>
-@property (nonatomic, strong) XRDragTableView *tableView;
+@property (weak, nonatomic) IBOutlet XRDragTableView *tableView;
+@property (nonatomic, strong) ZQTitleHeader *header;
 
 @end
 
 @implementation ZQRichTableView
 
 #pragma mark - LifeCycle
+
+- (void)dealloc {
+    NSLog(@"释放成功");
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self addUI];
-    
-    [self setupTableView];
+    [self configUI];
     
     [self loadContentList];
 }
 
-- (void)addUI {
-    XRDragTableView *tableView = [[XRDragTableView alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
-}
-
-#pragma mark - View Helpers
-
-- (void)initSubviews {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-
-    UIBarButtonItem *publish = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_nav_publish"] style:UIBarButtonItemStylePlain target:self action:@selector(publish:)];
-    self.navigationItem.rightBarButtonItem = publish;
-    
+- (void)configUI {
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
         
         self.extendedLayoutIncludesOpaqueBars = NO;
         self.modalPresentationCapturesStatusBarAppearance = NO;
     }
+    [self AutomaticalAdjustScrollViewDisable:self.tableView];
+    [self setupTableView];
 }
+
+#pragma mark - View Helpers
 
 - (void)setupTableView {
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ZQTextTableViewCell class]) bundle:nil] forCellReuseIdentifier:[ZQBaseRichTableViewCell cellIdForType:ZQMediaItemType_Paragraph]];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ZQImageViewTableViewCell class]) bundle:nil] forCellReuseIdentifier:[ZQBaseRichTableViewCell cellIdForType:ZQMediaItemType_Image]];
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 0;
+    self.tableView.estimatedSectionHeaderHeight = 0;
+    self.tableView.estimatedSectionFooterHeight = 0;
     self.tableView.dataArray = self.contentList;
     self.tableView.scrollSpeed = 10;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.tableView setTableHeaderView:[[ZQTitleHeader alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)]];
+    self.header = [[ZQTitleHeader alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+    [self.tableView setTableHeaderView:self.header];
     [self.tableView setTableFooterView:[UIView new]];
 }
 
@@ -83,22 +81,36 @@
 
 #pragma mark - Action
 
-- (void)back {
-//    [self.view endEditing:YES];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)publish:(UIBarButtonItem *)sender {
-    
-}
-
 #pragma mark - private
 
 - (void)updateListPositionSort {
     [self.contentList enumerateObjectsUsingBlock:^(ZQRichDataModel *model, NSUInteger idx, BOOL * _Nonnull stop) {
         model.row = idx;
     }];
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated {
+    NSInteger rows = [self.tableView numberOfRowsInSection:0];
+    
+    if (rows > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:rows - 1 inSection:0]
+                         atScrollPosition:UITableViewScrollPositionBottom
+                                 animated:animated];
+    }
+}
+
+- (void)AutomaticalAdjustScrollViewDisable:(id)aVCorScrollView {
+    if ([aVCorScrollView isKindOfClass:[UIViewController class]]) {
+        UIViewController* aVC = aVCorScrollView;
+        aVC.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    else if ([aVCorScrollView isKindOfClass:[UIScrollView class]]){
+        
+        UIScrollView* aScrollView = aVCorScrollView;
+        if (@available(iOS 11.0, *)) {
+            aScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+    }
 }
 
 static const NSUInteger kMBPostPhotosLimit = 9;
@@ -163,13 +175,22 @@ static const NSUInteger kMBPostPhotosLimit = 9;
 
 - (void)tableViewCellCallBack:(CallBackType)type dataModel:(ZQRichDataModel *)dataModel value:(id)obj{
     switch (type) {
+        case CallBackTypeTakePhoto: {
+            [self.view endEditing:YES];
+            
+            NSRange range = [obj rangeValue];
+            [self.delegate needTakePhotoForTableView:self.tableView photo:^(UIImage *image) {
+                [self addImageWithdataModel:dataModel range:range images:@[image]];
+            }];
+        }
+            break;
         case CallBackTypeAddImage: {
             [self.view endEditing:YES];
             
             NSRange range = [obj rangeValue];
-            NSArray *images = [self.delegate needSelectImagesForTableView:self.tableView];
-            
-            [self addImageWithdataModel:dataModel range:range images:images];
+            [self.delegate needSelectImagesForTableView:self.tableView selectedImages:^(NSArray<UIImage *> *images) {
+                [self addImageWithdataModel:dataModel range:range images:images];
+            }];
         }
             break;
         case CallBackTypeDelete: {
@@ -220,7 +241,7 @@ static const NSUInteger kMBPostPhotosLimit = 9;
         model1.mediaItem = item1;
         
         ZQMediaItem *item2 = [ZQMediaItem new];
-        item2.type = ZQMediaItemType_Image;
+        item2.type = ZQMediaItemType_Paragraph;
         item2.title = idx == images.count - 1 ? [dataModel.mediaItem.title substringFromIndex:range.location] : @"";
         ZQRichDataModel *model2 = [ZQRichDataModel new];
         model2.mediaItem = item2;
@@ -232,6 +253,9 @@ static const NSUInteger kMBPostPhotosLimit = 9;
     dataModel.mediaItem.title = [dataModel.mediaItem.title substringToIndex:range.location];
     [self updateListPositionSort];
     [self.tableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self scrollToBottomAnimated:YES];
+    });
 }
 
 #pragma mark - Getters & Setters
@@ -241,6 +265,10 @@ static const NSUInteger kMBPostPhotosLimit = 9;
         _contentList = [NSMutableArray array];
     }
     return _contentList;
+}
+
+- (NSString *)titleText {
+    return self.header.getTitleText;
 }
      
 @end

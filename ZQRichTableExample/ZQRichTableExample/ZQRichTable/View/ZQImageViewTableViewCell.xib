@@ -95,6 +95,13 @@
                     <constraint firstAttribute="trailing" secondItem="EeV-NL-D8K" secondAttribute="trailing" constant="15" id="vjA-zg-Sv2"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="image" destination="dJJ-1r-p2c" id="mFC-cj-1hl"/>
+                <outlet property="textConstraint" destination="CKg-v8-YJL" id="W6H-Ui-6VB"/>
+                <outlet property="textView" destination="38K-UB-on7" id="b4L-R2-uX7"/>
+                <outlet property="topConstraint" destination="xG6-Wo-Mlm" id="Cj2-ak-Yld"/>
+                <outlet property="topView" destination="EeV-NL-D8K" id="JIM-xF-48R"/>
+            </connections>
             <point key="canvasLocation" x="11" y="-172"/>
         </tableViewCell>
     </objects>

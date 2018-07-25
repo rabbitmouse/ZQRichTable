@@ -12,7 +12,8 @@
 
 @protocol ZQRichTableViewDelegate<NSObject>
 @required
-- (NSArray<UIImage *> *)needSelectImagesForTableView:(UITableView *)tableView;
+- (void )needSelectImagesForTableView:(UITableView *)tableView selectedImages:(void(^)(NSArray<UIImage *> *images))block;
+- (void )needTakePhotoForTableView:(UITableView *)tableView photo:(void(^)(UIImage *images))block;
 
 @optional
 // 点击查看某张图片
@@ -28,6 +29,9 @@
 @property (nonatomic, strong) NSMutableArray<ZQRichDataModel *> *contentList;
 
 @property (nonatomic, weak) id<ZQRichTableViewDelegate> delegate;
+
+@property (nonatomic, copy, readonly) NSString *titleText;
+
 
 @end
 

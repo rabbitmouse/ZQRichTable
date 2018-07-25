@@ -34,6 +34,8 @@
 		0C1169792105D5B60042666B /* ic_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C1169782105D5B60042666B /* ic_photo.png */; };
 		0C11697D2105D6030042666B /* ic_picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C11697C2105D6030042666B /* ic_picture.png */; };
 		0C11697F2105D6160042666B /* ic_keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C11697E2105D6160042666B /* ic_keyboard.png */; };
+		0C44904821081EA100C1A194 /* ZQRichTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C44904721081EA100C1A194 /* ZQRichTableView.xib */; };
+		0C46597A2106BA1900E08561 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C4659792106BA1900E08561 /* DemoViewController.m */; };
 		311882DEC90127C233957F12 /* libPods-ZQRichTableExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 551CBDF44E4098593CDD098E /* libPods-ZQRichTableExampleTests.a */; };
 		4EAB888BE1E9FC124A02557F /* libPods-ZQRichTableExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F4B79C73B35FF3611975F7 /* libPods-ZQRichTableExample.a */; };
 		CF05B14F73794856686E1EB5 /* libPods-ZQRichTableExampleUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E35BED5C0623A7DD9562AE /* libPods-ZQRichTableExampleUITests.a */; };
@@ -105,6 +107,9 @@
 		0C1169782105D5B60042666B /* ic_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_photo.png; sourceTree = "<group>"; };
 		0C11697C2105D6030042666B /* ic_picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_picture.png; sourceTree = "<group>"; };
 		0C11697E2105D6160042666B /* ic_keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_keyboard.png; sourceTree = "<group>"; };
+		0C44904721081EA100C1A194 /* ZQRichTableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZQRichTableView.xib; sourceTree = "<group>"; };
+		0C4659782106BA1800E08561 /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		0C4659792106BA1900E08561 /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
 		0F936F8AA8D94A7DED7430EC /* Pods-ZQRichTableExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZQRichTableExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZQRichTableExampleUITests/Pods-ZQRichTableExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
 		1D231F7C26D775DDF907FA6F /* Pods-ZQRichTableExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZQRichTableExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZQRichTableExampleTests/Pods-ZQRichTableExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		551CBDF44E4098593CDD098E /* libPods-ZQRichTableExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZQRichTableExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +178,8 @@
 				0C11690921057AB70042666B /* AppDelegate.m */,
 				0C11690B21057AB70042666B /* ViewController.h */,
 				0C11690C21057AB70042666B /* ViewController.m */,
+				0C4659782106BA1800E08561 /* DemoViewController.h */,
+				0C4659792106BA1900E08561 /* DemoViewController.m */,
 				0C11690E21057AB70042666B /* Main.storyboard */,
 				0C11691121057AB80042666B /* Assets.xcassets */,
 				0C11691321057AB80042666B /* LaunchScreen.storyboard */,
@@ -244,6 +251,7 @@
 			children = (
 				0C11693E21057AF70042666B /* ZQRichTableView.h */,
 				0C11693F21057AF70042666B /* ZQRichTableView.m */,
+				0C44904721081EA100C1A194 /* ZQRichTableView.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -436,6 +444,7 @@
 				0C1169762105D5860042666B /* MBKeyboardToolView.xib in Resources */,
 				0C1169792105D5B60042666B /* ic_photo.png in Resources */,
 				0C1169702105C5630042666B /* ic_delete.png in Resources */,
+				0C44904821081EA100C1A194 /* ZQRichTableView.xib in Resources */,
 				0C11691521057AB80042666B /* LaunchScreen.storyboard in Resources */,
 				0C11691221057AB80042666B /* Assets.xcassets in Resources */,
 				0C11691021057AB70042666B /* Main.storyboard in Resources */,
@@ -545,6 +554,7 @@
 				0C116953210581520042666B /* ZQImageViewTableViewCell.m in Sources */,
 				0C11694421057F030042666B /* XRDragTableView.m in Sources */,
 				0C11694021057AF70042666B /* ZQRichTableView.m in Sources */,
+				0C46597A2106BA1900E08561 /* DemoViewController.m in Sources */,
 				0C11694A2105802A0042666B /* ZQRichDataModel.m in Sources */,
 				0C11694E210581390042666B /* ZQTextTableViewCell.m in Sources */,
 				0C11690D21057AB70042666B /* ViewController.m in Sources */,

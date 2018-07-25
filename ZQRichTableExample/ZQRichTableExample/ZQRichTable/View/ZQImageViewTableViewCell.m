@@ -29,6 +29,11 @@ static CGFloat margin = 5;
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+    self.textConstraint.constant = 0;
+    self.textView.hidden = YES;
+    
+//    [self addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
     CALayer *maskLayer = [CALayer layer];
     maskLayer.bounds = CGRectMake(0, 0, kScreenWidth - 30, self.topConstraint.constant);
     maskLayer.position = CGPointMake(CGRectGetWidth(maskLayer.bounds)/2, self.topConstraint.constant/2);
@@ -38,21 +43,12 @@ static CGFloat margin = 5;
 
 - (void)setModel:(ZQRichDataModel *)model {
     [super setModel:model];
-    
-//    if(model.mediaItem.src) {
-////        self.textView.placeholderText = @"输入图片描述（最多30字）";
-////        self.textView.text = model.imageDesc;
-//        self.image.image = model.image ?: [UIImage imageNamed:@"timg"];
-//        
-//        CGFloat height = [self.textView sizeThatFits:CGSizeMake(kScreenWidth, MAXFLOAT)].height;
-//        self.textConstraint.constant = height > 40 ? height:40;
-//        model.height = self.topConstraint.constant + margin*2 + self.textConstraint.constant;
-//    }
+
     self.image.image = model.image ?: [UIImage imageNamed:@"timg"];
     
-    CGFloat height = [self.textView sizeThatFits:CGSizeMake(self.bounds.size.width - 15 * 3, MAXFLOAT)].height;
-    self.textConstraint.constant = height > 40 ? height:40;
-    model.height = self.topConstraint.constant + margin*2 + self.textConstraint.constant;
+//    CGFloat height = [self.textView sizeThatFits:CGSizeMake(self.bounds.size.width - 15 * 3, MAXFLOAT)].height;
+//    self.textConstraint.constant = height > 40 ? height:40;
+    model.height = self.topConstraint.constant + margin*2 ;
 }
 
 #pragma mark - Text View Delegate

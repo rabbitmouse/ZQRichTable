@@ -10,7 +10,9 @@
 #import "MBKeyboardToolView.h"
 #import "ZQMacro.h"
 
-@interface ZQTextTableViewCell()<UITextViewDelegate>
+@interface ZQTextTableViewCell()<UITextViewDelegate> {
+    CGFloat _preTextHeight;
+}
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @property (nonatomic, weak) MBKeyboardToolView *toolBar;
@@ -20,9 +22,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
     
-    self.textView.scrollEnabled = NO;
     self.textView.delegate = self;
     
      [self addToolBar];
@@ -39,7 +39,7 @@
         model.height = 50;
     }
     else {
-        model.height = [self.textView sizeThatFits:CGSizeMake(kScreenWidth - 15 * 3, MAXFLOAT)].height;
+        model.height = [self.textView sizeThatFits:CGSizeMake(kScreenWidth - 15 * 2, MAXFLOAT)].height;
     }
 }
 
@@ -54,7 +54,7 @@
             case 0:
             {
                 if(weakCell.delegate && [weakCell.delegate respondsToSelector:@selector(tableViewCellCallBack:dataModel:value:)]) {
-                    [weakCell.delegate tableViewCellCallBack:-1
+                    [weakCell.delegate tableViewCellCallBack:CallBackTypeTakePhoto
                                                    dataModel:self.model
                                                        value:[NSNumber valueWithRange:self.textView.selectedRange]];
                 }
@@ -63,7 +63,7 @@
             case 1:
             {
                 if(weakCell.delegate && [weakCell.delegate respondsToSelector:@selector(tableViewCellCallBack:dataModel:value:)]) {
-                    [weakCell.delegate tableViewCellCallBack:0
+                    [weakCell.delegate tableViewCellCallBack:CallBackTypeAddImage
                                                    dataModel:self.model
                                                        value:[NSNumber valueWithRange:self.textView.selectedRange]];
                 }
@@ -90,14 +90,22 @@
     }
 }
 
-- (void)textViewDidChangeSelection:(UITextView *)textView {
-    if(textView.isFirstResponder) {
-        self.model.height = [self.textView sizeThatFits:CGSizeMake(kScreenWidth - 15 * 3, MAXFLOAT)].height;
-        
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    CGFloat curHeight = [textView sizeThatFits:CGSizeMake(kScreenWidth - 15 * 2, MAXFLOAT)].height;
+    if ([text isEqualToString:@"\n"]) {
+        curHeight += 20.f;
+    }
+    
+    if (curHeight != _preTextHeight && curHeight > 40) {
+        _preTextHeight = curHeight;
+        self.model.height = curHeight;
         UITableView *tableView = [self tableView];
         [tableView beginUpdates];
         [tableView endUpdates];
     }
+    
+    return YES;
 }
 
 @end

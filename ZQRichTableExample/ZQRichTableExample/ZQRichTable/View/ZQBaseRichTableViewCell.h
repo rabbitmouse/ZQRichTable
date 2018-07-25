@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, CellBlockType) {
 };
 
 typedef NS_ENUM(NSUInteger, CallBackType) {
+    CallBackTypeTakePhoto,
     CallBackTypeAddImage,
     CallBackTypeDelete,
     CallBackTypePreviewImage,

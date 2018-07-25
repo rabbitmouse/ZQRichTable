@@ -11,13 +11,15 @@
 #import "ZQMediaItem.h"
 
 @interface ZQRichDataModel : NSObject
-
+//媒体对象
 @property (nonatomic, strong) ZQMediaItem *mediaItem;
+//数据
 @property (nonatomic, strong) UIImage   *image;
 @property (nonatomic, copy)   NSString  *imageDesc;
+
+//布局
 @property (nonatomic, assign) CGFloat   height;
 @property (nonatomic, assign) NSInteger row;
-
 @property (nonatomic, assign) BOOL isMerged;
 @property (nonatomic, assign) BOOL isEditing;
 

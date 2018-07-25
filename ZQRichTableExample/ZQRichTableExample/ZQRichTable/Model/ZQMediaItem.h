@@ -18,8 +18,6 @@ typedef NS_ENUM(NSInteger, ZQMediaItemType) {
 @interface ZQMediaItem : NSObject
 
 @property (nonatomic, strong) NSString *title;
-
-
 @property (assign, nonatomic) ZQMediaItemType type;
 
 @end
